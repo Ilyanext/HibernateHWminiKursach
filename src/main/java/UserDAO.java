@@ -1,7 +1,14 @@
-public interface UserDAO {
-    void mergeUser(User user);
+import java.util.List;
 
-    void saveUser(User user);
+public interface UserDAO {
+    User mergeUser(User user);
+
+    User saveUser(User user);
 
     void deleteUser(User user);
+
+    User getByID(int id);
+    List<User> getAllUser();
+
+
 }

@@ -2,10 +2,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.List;
 
 public class RolesDAOImpl implements RolesDAO{
     @Override
-    public void mergeRoles(Roles roles) {
+    public Roles mergeRoles(Roles roles) {
         EntityManager entityManager = createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
@@ -14,10 +15,11 @@ public class RolesDAOImpl implements RolesDAO{
 
         transaction.commit();
         entityManager.close();
+        return roles;
     }
 
     @Override
-    public void saveRoles(Roles roles) {
+    public Roles saveRoles(Roles roles) {
         EntityManager entityManager = createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
@@ -26,6 +28,8 @@ public class RolesDAOImpl implements RolesDAO{
 
         transaction.commit();
         entityManager.close();
+        return roles;
+
     }
 
     @Override
@@ -39,17 +43,27 @@ public class RolesDAOImpl implements RolesDAO{
         transaction.commit();
         entityManager.close();
     }
+
     @Override
-    public void flushRoles() {
+    public Roles getByID(int id) {
         EntityManager entityManager = createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
 
-        entityManager.flush();
+       return entityManager.find(Roles.class,id);
 
-        transaction.commit();
-        entityManager.close();
     }
+
+    @Override
+    public List getAllRoles() {
+        EntityManager entityManager = createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+
+        return entityManager.createQuery("FROM Roles").getResultList();
+    }
+
+
     static EntityManager createEntityManager(){
         EntityManagerFactory entityManager = Persistence.createEntityManagerFactory("myPersistenceUnit");
                 return entityManager.createEntityManager();

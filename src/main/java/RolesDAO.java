@@ -1,10 +1,16 @@
-public interface RolesDAO {
-    void mergeRoles(Roles roles);
+import javax.management.relation.Role;
+import java.util.List;
 
-    void saveRoles(Roles roles);
+public interface RolesDAO {
+    Roles mergeRoles(Roles roles);
+
+    Roles saveRoles(Roles roles);
 
     void deleteRoles(Roles roles);
 
 
-    void flushRoles();
+    Roles getByID(int id);
+
+    List<Roles> getAllRoles();
+
 }

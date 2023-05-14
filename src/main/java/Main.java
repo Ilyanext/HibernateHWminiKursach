@@ -1,38 +1,29 @@
-import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
+import javax.management.relation.Role;
+import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-
 public class Main {
+    static UserDAO userDAO = new UserDAOImpl();
+    static RolesDAO rolesDAO = new RolesDAOImpl();
     public static void main(String[] args) {
-//        Roles roles= new Roles();
-//        roles.printChangeRole(Role.DEVELOPER);
-//        User user = new User("Ilya", "loginn",123, new HashSet<>(roles.printChangeRole(roles)));
-//        RolesDAO rolesDAO= new RolesDAOImpl();
-//        UserDAO userDAO = new UserDAOImpl();
-//
-//        rolesDAO.saveRoles(roles);
-//        userDAO.saveUser(user);
-        RolesDAO rolesDAO=new RolesDAOImpl();
-        UserDAO userDAO=new UserDAOImpl();
 
-        Roles roles1 = new Roles();
-        roles1.printChangeRole(Role.DEVELOPER);
-        rolesDAO.saveRoles(roles1);
+        Roles developer = Roles.builder().roleType(RoleType.DEVELOPER).build();
+        Roles analyst = Roles.builder().roleType(RoleType.ANALYST).build();
+        Roles tester = Roles.builder().roleType(RoleType.TESTER).build();
 
-        Roles roles2 = new Roles();
-        roles2.printChangeRole(Role.ANALYST);
-        rolesDAO.saveRoles(roles2);
-        rolesDAO.flushRoles();
+        rolesDAO.saveRoles(developer);
+        rolesDAO.saveRoles(analyst);
+        rolesDAO.saveRoles(tester);
 
-        User user1=new User("Ilya", "loginn",123);
-        user1.addRole(roles1);
-        user1.addRole(roles2);
 
-        userDAO.saveUser(user1);
-
+        Set<Roles> roles = new HashSet<>();
+        roles.add(rolesDAO.getByID(1));
+        User newUser =User.builder().nameUsers("Ilya").loginUsers("rtyu").passwordUsers(12354).createTime(LocalDateTime.now()).mergeTime(LocalDateTime.now()).roles(roles).build();
+        User newUser2 = userDAO.saveUser(newUser);
+        roles.add(rolesDAO.getByID(2));
+        newUser2.setRoles(roles);
+        userDAO.mergeUser(newUser2);
 
     }
 }

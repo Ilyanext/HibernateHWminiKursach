@@ -1,9 +1,16 @@
+import lombok.*;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of ="idUsers")
+@Builder
 @Entity
 @Table(name = "users")
 public class User {
@@ -20,71 +27,20 @@ public class User {
     @Column(name = "password", nullable = false)
     private int passwordUsers;
     @Column(name = "data", nullable = false)
-    private LocalDateTime localDateTime;
+    private LocalDateTime createTime;
+    @Column(name = "data_modific", nullable = false)
+    private LocalDateTime mergeTime;
 
-
-    @ManyToMany( cascade = CascadeType.ALL)
+    @ManyToMany( cascade = CascadeType.MERGE)
     @JoinTable(
             name = "users_roles",
             joinColumns = {@JoinColumn(name = "users_id",referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "roles_id", referencedColumnName = "id")}
     )
     private Set<Roles> roles=new HashSet<>();
-    public void addRole(Roles role){
-        this.roles.add(role);
-
-    }
-    public void removeRole(Roles role){
-        this.roles.remove(role);
-    }
-    public User( String nameUsers, String loginUsers, int passwordUsers,  Set<Roles> roles) {
-
-        this.nameUsers = nameUsers;
-        this.loginUsers = loginUsers;
-        this.passwordUsers = passwordUsers;
-        this.roles = roles;
-    }
-    public User( String nameUsers, String loginUsers, int passwordUsers) {
-
-        this.nameUsers = nameUsers;
-        this.loginUsers = loginUsers;
-        this.passwordUsers = passwordUsers;
-    }
-    public String getNameUsers() {
-        return nameUsers;
-    }
 
 
-    public void setNameUsers(String name) {
-        this.nameUsers = name;
-    }
 
-    public String getLoginUsers() {
-        return loginUsers;
-    }
 
-    public void setLoginUsers(String login) {
-        this.loginUsers = login;
-    }
 
-    public int getPasswordUsers() {
-        return passwordUsers;
-    }
-
-    public void setPasswordUsers(int password) {
-        this.passwordUsers = password;
-    }
-
-    public User() {
-
-    }
-
-    public void setIdUsers(int id) {
-
-        this.idUsers = id;
-    }
-
-    public int getIdUsers() {
-        return idUsers;
-    }
 }

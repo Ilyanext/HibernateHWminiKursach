@@ -2,10 +2,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.List;
 
 public class UserDAOImpl implements UserDAO {
     @Override
-    public void mergeUser(User user) {
+    public User mergeUser(User user) {
         EntityManager entityManager = createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
@@ -14,10 +15,11 @@ public class UserDAOImpl implements UserDAO {
 
         transaction.commit();
         entityManager.close();
+        return user;
     }
 
     @Override
-    public void saveUser(User user) {
+    public User saveUser(User user) {
         EntityManager entityManager = createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
@@ -26,6 +28,7 @@ public class UserDAOImpl implements UserDAO {
 
         transaction.commit();
         entityManager.close();
+        return user;
     }
 
     @Override
@@ -38,6 +41,24 @@ public class UserDAOImpl implements UserDAO {
 
         transaction.commit();
         entityManager.close();
+    }
+
+    @Override
+    public User getByID(int id) {
+        EntityManager entityManager = createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+
+        return entityManager.find(User.class,id);
+    }
+
+    @Override
+    public List getAllUser() {
+        EntityManager entityManager = createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+
+        return entityManager.createQuery("FROM User").getResultList();
     }
 
     static EntityManager createEntityManager() {

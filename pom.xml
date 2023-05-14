@@ -9,6 +9,11 @@
   <url>http://maven.apache.org</url>
 
   <dependencies>
+      <dependency>
+          <groupId>org.projectlombok</groupId>
+          <artifactId>lombok</artifactId>
+          <version>1.18.26</version>
+      </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
     <dependency>
